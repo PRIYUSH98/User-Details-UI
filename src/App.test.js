@@ -48,4 +48,21 @@ describe('UserList', () => {
     expect(searchInput.value).toBe('John');
   });
 
+  it('should display "No Users to display" message when filteredUsers is empty', () => {
+    useSelector.mockReturnValue([]);
+    render(<UserList />);
+    const noUsersMessage = screen.getByText('No Users to display');
+    expect(noUsersMessage).toBeInTheDocument();
+  });
+
+  it('displays filtered users when filteredUsers is not empty', () => {
+    useSelector.mockReturnValue([
+      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' },
+      { id: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@example.com' },
+    ]);
+    render(<UserList />);
+    const userElements = screen.getAllByTestId('user-card');
+    expect(userElements).toHaveLength(2);
+  });
+
 });
